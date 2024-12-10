@@ -20,6 +20,7 @@ runs:
   - name: Install pylint
     run: |
       pip install pylint
+    shell: sh
 
   - name: Setup reviewdog
     uses: reviewdog/action-setup@v1

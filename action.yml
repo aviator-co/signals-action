@@ -29,6 +29,7 @@ runs:
   - name: Run pylint, reviewdog, and send output
     run: |
       pylint src/basemodel.py | reviewdog -efm="%f:%l:%c: %m" | curl -X POST -H "Content-Type: application/json" -d @- http://staging.aviator.co/api/signals > server-response.json
+    shell: sh
 
   # todo: update to check for 200 response, log response now for testing purposes
   - name: Upload Response Artifact

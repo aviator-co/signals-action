@@ -1,0 +1,54 @@
+name: "Aviator Signals"
+description: "Runs linters and sends the output to aviator/api/signals."
+branding:
+  color: yellow
+  icon: activity
+runs:
+  using: "composite"
+  steps:
+  - uses: actions/checkout@v4
+    with:
+      filter: 'blob:none'
+
+  # todo: only changed files?
+
+  - uses: actions/setup-python@v5
+    with:
+      python-version: "3.12"
+      cache: "pip"
+
+  - name: Install dependencies
+    run: |
+      pip install requests
+      pip install pylint
+      pip install mypy
+    shell: sh
+
+  - name: Setup reviewdog
+    uses: reviewdog/action-setup@v1
+    with:
+      reviewdog_version: latest
+
+  - name: Show Current Directory
+    run: pwd
+    shell: sh
+
+  - name: List Files
+    run: ls -la
+    shell: sh
+
+  - name: Run linters
+    run: python $GITHUB_ACTION_PATH/action.py path=$GITHUB_ACTION_PATH
+    shell: sh
+    env:
+      ACTION_PATH: $GITHUB_ACTION_PATH
+      AVIATOR_API_TOKEN: ${{ inputs.aviator-api-token }}
+      OWNER: ${{ inputs.owner }}
+
+inputs:
+  aviator-api-token:
+    description: "The Aviator API token"
+    required: true
+  owner:
+    description: "The owner of the repository"
+    required: true

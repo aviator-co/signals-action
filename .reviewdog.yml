@@ -1,0 +1,9 @@
+runner:
+  mypy:
+    cmd: mypy testing.py
+    format: mypy
+  pylint:
+    cmd: pylint testing.py
+    errorformat:
+      - "%f:%l:%c: %m"
+    name: pylint

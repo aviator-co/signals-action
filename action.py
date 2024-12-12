@@ -11,7 +11,7 @@ from pathlib import Path
 directory_name = "linting_outputs"
 
 def run_linters():
-    # API endpoint
+    github_action_path = os.getenv("ACTION_PATH", "Unknown")
     url = "http://localhost:5000/api/signals"
     commit_hash = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     top_level_dir = subprocess.check_output(
@@ -29,7 +29,7 @@ def run_linters():
             save_file = f"sarif_output.json"
 
             subprocess.run(
-                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} >> {save_file}',
+                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} --conf={github_action_path}/.reviewdog.yml >> {save_file}',
                 shell=True,
                 stderr=subprocess.PIPE,
                 check=True,

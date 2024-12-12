@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
-import json
+# import json
 import os
-import cattrs
-import sarif_om as om
+# import cattrs
+# import sarif_om as om
 import subprocess
-import requests
+# import requests
 from pathlib import Path
 
 directory_name = "linting_outputs"

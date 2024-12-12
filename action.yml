@@ -29,7 +29,7 @@ runs:
       reviewdog_version: latest
 
   - name: Run linters
-    run: python $GITHUB_ACTION_PATH/action.py
+    run: python $GITHUB_ACTION_PATH/action.py path=$GITHUB_ACTION_PATH
     shell: sh
 
   # todo: update to check for 200 response, log response now for testing purposes
@@ -38,3 +38,5 @@ runs:
     with:
       name: sarif_output
       path: sarif_output.json
+env:
+  ACTION_PATH: $GITHUB_ACTION_PATH

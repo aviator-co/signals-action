@@ -28,7 +28,7 @@ runs:
       reviewdog_version: latest
 
   - name: Run linters
-    run: python action.py
+    run: python $GITHUB_ACTION_PATH/action.py"
     shell: sh
 
   # todo: update to check for 200 response, log response now for testing purposes

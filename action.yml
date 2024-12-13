@@ -31,6 +31,8 @@ runs:
   - name: Run linters
     run: python $GITHUB_ACTION_PATH/action.py path=$GITHUB_ACTION_PATH
     shell: sh
+    env:
+      ACTION_PATH: $GITHUB_ACTION_PATH
 
   # todo: update to check for 200 response, log response now for testing purposes
   - name: Upload Response Artifact
@@ -38,5 +40,3 @@ runs:
     with:
       name: sarif_output
       path: sarif_output.json
-env:
-  ACTION_PATH: $GITHUB_ACTION_PATH

@@ -26,10 +26,10 @@ def run_linters():
         # todo: add to reviewdog config instead
         linters = ['mypy', 'pylint']
         for linter in linters:
-            save_file = f"sarif_output.json"
+            save_file = f"sarif_output_{linter}.json"
 
             subprocess.run(
-                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} --conf={github_action_path}/.reviewdog.yml >> {save_file}',
+                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} --conf={github_action_path}/.reviewdog.yml > {save_file}',
                 shell=True,
                 stderr=subprocess.PIPE,
                 check=True,
@@ -40,7 +40,10 @@ def run_linters():
                     file.write(commit_hash)
                     file.write("\n")
                     file.write(repo_name)
-                    file.write(save_file)
+                    file.write("\n")
+
+                    for line in save_file:
+                        file.write(line)
                 # data = {
                 #     "repo_name": repo_name,
                 #     "commit_hash": commit_hash,

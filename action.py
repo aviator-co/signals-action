@@ -24,8 +24,9 @@ def run_linters():
     output_dir.mkdir(exist_ok=True)
     output_file = "output.txt"
 
-    if os.path.exists(output_file):
-        os.remove(output_file)
+    # if os.path.exists(output_file):
+    #     os.remove(output_file)
+
     try:
         # todo: add to reviewdog config instead --conf={github_action_path}/.reviewdog.yml
         linters = ['mypy', 'pylint']

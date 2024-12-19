@@ -22,27 +22,33 @@ def run_linters():
     
     output_dir = Path(directory_name)
     output_dir.mkdir(exist_ok=True)
+    output_file = "output.txt"
     try:
-        # todo: add to reviewdog config instead
+        if os.path.exists(output_file):
+            os.remove(output_file)
+
+        # todo: add to reviewdog config instead --conf={github_action_path}/.reviewdog.yml
         linters = ['mypy', 'pylint']
         for linter in linters:
             save_file = f"sarif_output_{linter}.json"
 
             subprocess.run(
-                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} --conf={github_action_path}/.reviewdog.yml > {save_file}',
+                f'{linter} testing.py | reviewdog -reporter=sarif -runners={linter} --name={linter} > {save_file}',
                 shell=True,
                 stderr=subprocess.PIPE,
                 check=True,
             )
             
-            with open(save_file, "r") as file:
-                with open("output.txt", "w") as file:
+            with open(save_file, "r") as tool_output:
+                with open(output_file, "a") as file:
+                    file.write(f"LINTER OUTPUT: {linter}")
+                    file.write("\n")
                     file.write(commit_hash)
                     file.write("\n")
                     file.write(repo_name)
                     file.write("\n")
 
-                    for line in save_file:
+                    for line in tool_output:
                         file.write(line)
                 # data = {
                 #     "repo_name": repo_name,

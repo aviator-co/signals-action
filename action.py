@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import json
+# import json
 import os
 # import cattrs
 # import sarif_om as om
@@ -36,11 +36,11 @@ def run_linters():
             )
             
             with open(save_file, "r") as file:
-                with open("response.txt", "w") as file:
+                with open("output.txt", "w") as file:
                     file.write(commit_hash)
                     file.write("\n")
                     file.write(repo_name)
-                    file.write(json.load(save_file))
+                    file.write(save_file)
                 # data = {
                 #     "repo_name": repo_name,
                 #     "commit_hash": commit_hash,

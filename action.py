@@ -41,7 +41,7 @@ def run_linters():
             )
             
             with open(save_file, "r") as tool_output:
-                with open(output_file, "w" if i == 0 else "a") as file:
+                with open(output_file, "w") as file:
                     file.write(f"LINTER OUTPUT: {linter}")
                     file.write("\n")
                     file.write(commit_hash)

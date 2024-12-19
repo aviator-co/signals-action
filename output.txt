@@ -1,5 +1,5 @@
 LINTER OUTPUT: mypy
-1a0f5a8d0e8951261b7c5ea4309230364d6bf734
+53d99f2bb8b0e66d7c45ec34c3bec47e0ac3a316
 signals-action
 {
   "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
@@ -53,7 +53,7 @@ signals-action
   "version": "2.1.0"
 }
 LINTER OUTPUT: pylint
-1a0f5a8d0e8951261b7c5ea4309230364d6bf734
+53d99f2bb8b0e66d7c45ec34c3bec47e0ac3a316
 signals-action
 {
   "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",

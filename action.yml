@@ -34,6 +34,9 @@ runs:
     env:
       ACTION_PATH: $GITHUB_ACTION_PATH
 
+  - name: Check output file
+    run: ls -la output.txt
+
   # todo: update to check for 200 response, log response now for testing purposes
   - name: Upload Response Artifact
     uses: actions/upload-artifact@v3

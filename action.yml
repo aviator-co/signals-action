@@ -36,6 +36,7 @@ runs:
 
   - name: Check output file
     run: ls -la output.txt
+    shell: sh
 
   # todo: update to check for 200 response, log response now for testing purposes
   - name: Upload Response Artifact

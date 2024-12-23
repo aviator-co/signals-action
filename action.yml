@@ -24,7 +24,7 @@ runs:
     shell: sh
 
   - name: Install dependencies
-      run: pip install requests
+    run: pip install requests
 
   - name: Setup reviewdog
     uses: reviewdog/action-setup@v1

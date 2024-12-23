@@ -21,6 +21,7 @@ def run_linters():
         
     access_token = os.getenv("AVIATOR_API_TOKEN")
     repo_name = os.path.basename(top_level_dir)
+    print("REPO NAME: ", repo_name)
     # repo_name = 'aviator-testing-sa/testing-1'
     headers = {
         "Content-Type": "application/json",

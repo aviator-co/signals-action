@@ -17,14 +17,12 @@ runs:
       python-version: "3.12"
       cache: "pip"
 
-  - name: Install linters
+  - name: Install dependencies
     run: |
+      pip install requests
       pip install pylint
       pip install mypy
     shell: sh
-
-  - name: Install dependencies
-    run: pip install requests
 
   - name: Setup reviewdog
     uses: reviewdog/action-setup@v1

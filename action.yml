@@ -29,6 +29,12 @@ runs:
     with:
       reviewdog_version: latest
 
+  - name: Show Current Directory
+    run: pwd
+
+  - name: List Files
+    run: ls -la
+
   - name: Run linters
     run: python $GITHUB_ACTION_PATH/action.py path=$GITHUB_ACTION_PATH
     shell: sh

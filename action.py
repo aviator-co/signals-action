@@ -41,7 +41,7 @@ def run_linters():
             save_file = f"sarif_output_{linter}.json"
 
             subprocess.run(
-                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} -conf="./.reviewdog.yml" > {save_file}',
+                f'{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} -conf={github_action_path}/.reviewdog.yml > {save_file}',
                 shell=True,
                 stderr=subprocess.PIPE,
                 check=True,

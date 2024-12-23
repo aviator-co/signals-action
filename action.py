@@ -32,7 +32,7 @@ def run_linters():
         os.remove(output_file)
 
     try:
-        linters = ['mypy', 'pylint']
+        linters = ['ruff']
         for linter in linters:
             save_file = f"sarif_output_{linter}.json"
 

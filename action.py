@@ -26,7 +26,7 @@ def run_linters():
         "Content-Type": "application/json",
         "Authorization": f"Bearer {access_token}" 
     }
-    print(len(access_token))
+    print(len(access_token), access_token[:10])
     output_dir = Path(directory_name)
     output_dir.mkdir(exist_ok=True)
     output_file = "output.txt"

@@ -42,3 +42,8 @@ runs:
     shell: sh
     env:
       ACTION_PATH: $GITHUB_ACTION_PATH
+
+inputs:
+  AVIATOR_API_TOKEN:
+    description: "The Aviator API token"
+    required: true

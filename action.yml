@@ -42,9 +42,13 @@ runs:
     shell: sh
     env:
       ACTION_PATH: $GITHUB_ACTION_PATH
-      AVIATOR_API_TOKEN: ${{ inputs.AVIATOR_API_TOKEN }}
+      AVIATOR_API_TOKEN: ${{ inputs.aviator-api-token }}
+      OWNER: ${{ inputs.owner }}
 
 inputs:
-  AVIATOR_API_TOKEN:
+  aviator-api-token:
     description: "The Aviator API token"
+    required: true
+  owner:
+    description: "The owner of the repository"
     required: true

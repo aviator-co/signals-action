@@ -19,7 +19,7 @@ def run_linters():
             ["git", "rev-parse", "--show-toplevel"], text=True
         ).strip()
         
-    access_token = os.getenv("AVIATOR_TOKEN")
+    access_token = os.getenv("aviator-token")
     repo_name = os.path.basename(top_level_dir)
     # repo_name = 'aviator-testing-sa/testing-1'
     headers = {

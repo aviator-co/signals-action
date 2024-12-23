@@ -20,8 +20,8 @@ runs:
   - name: Install dependencies
     run: |
       pip install requests
-      pip install pylint
       pip install mypy
+      pip install ruff
     shell: sh
 
   - name: Setup reviewdog

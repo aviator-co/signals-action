@@ -1,9 +1,9 @@
 runner:
   mypy:
-    cmd: mypy testing.py
+    cmd: mypy ./
     format: mypy
-  pylint:
-    cmd: pylint testing.py
+  ruff:
+    cmd: ruff check .
     errorformat:
       - "%f:%l:%c: %m"
-    name: pylint
+    name: ruff

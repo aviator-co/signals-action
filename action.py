@@ -27,7 +27,6 @@ def run_linters():
         "Authorization": f"Bearer {access_token}" 
     }
 
-    print("Bearer {access_token}")
     output_dir = Path(directory_name)
     output_dir.mkdir(exist_ok=True)
     output_file = "output.txt"

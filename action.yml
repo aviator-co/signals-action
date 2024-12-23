@@ -42,7 +42,7 @@ runs:
     shell: sh
     env:
       ACTION_PATH: $GITHUB_ACTION_PATH
-      AVIATOR_API_TOKEN: inputs.AVIATOR_API_TOKEN
+      AVIATOR_API_TOKEN: ${{ inputs.AVIATOR_API_TOKEN }}
 
 inputs:
   AVIATOR_API_TOKEN:

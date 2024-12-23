@@ -31,9 +31,11 @@ runs:
 
   - name: Show Current Directory
     run: pwd
+    shell: sh
 
   - name: List Files
     run: ls -la
+    shell: sh
 
   - name: Run linters
     run: python $GITHUB_ACTION_PATH/action.py path=$GITHUB_ACTION_PATH

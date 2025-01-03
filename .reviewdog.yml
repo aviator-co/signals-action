@@ -1,9 +1,7 @@
 runner:
   mypy:
-    cmd: mypy ./
+    cmd: mypy .
     format: mypy
   ruff:
-    cmd: ruff check .
-    errorformat:
-      - "%f:%l:%c: %m"
-    name: ruff
+    cmd: ruff check --output-format=sarif
+    format: sarif

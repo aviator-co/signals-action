@@ -1,65 +1,66 @@
 #!/usr/bin/env python
 
-import json
 import os
-import subprocess
-import requests
+import sys
 from pathlib import Path
 
-directory_name = "linting_outputs"
+import requests
+
+API_ENDPOINTS = {
+    "sarif": "https://app.aviator.co/api/signals/sarif",
+    "astgrep": "https://app.aviator.co/api/signals/astgrep",
+}
 
 
-def run_linters():
-    github_action_path = os.getenv("ACTION_PATH", "Unknown")
-    url = "https://app.aviator.co/api/signals"
-    commit_hash = subprocess.check_output(
-        ["git", "rev-parse", "HEAD"], text=True
-    ).strip()
-    top_level_dir = subprocess.check_output(
-        ["git", "rev-parse", "--show-toplevel"], text=True
-    ).strip()
+def main():
+    commit_sha = os.getenv("GITHUB_SHA", None)
+    if commit_sha is None:
+        print("GITHUB_SHA is not set. Exiting...")
+        sys.exit(1)
+    repo_name = os.getenv("REPO_NAME", None)
+    if repo_name is None:
+        print("REPO_NAME is not set. Exiting...")
+        sys.exit(1)
+    access_token = os.getenv("AVIATOR_API_TOKEN", None)
+    if access_token is None:
+        print("AVIATOR_API_TOKEN is not set. Exiting...")
+        sys.exit(1)
+    input_format = os.getenv("INPUT_FORMAT", None)
+    if input_format is None:
+        print("INPUT_FORMAT is not set. Exiting...")
+        sys.exit(1)
+    file_paths_str = os.getenv("FILE_PATHS", "")
+    file_paths = list(
+        filter(lambda p: p != "", [p.strip() for p in file_paths_str.split(",")])
+    )
+    if not file_paths:
+        print("FILE_PATHS is not set. Exiting...")
+        sys.exit(1)
 
-    access_token = os.getenv("AVIATOR_API_TOKEN")
-    repo_name = os.getenv("OWNER") + "/" + os.path.basename(top_level_dir)
+    api_endpoint = API_ENDPOINTS.get(input_format, None)
+    if api_endpoint is None:
+        print(f"Invalid input format {input_format}. Exiting...")
+        sys.exit(1)
+    api_endpoint += f"?repo_name={repo_name}&commit_sha={commit_sha}"
 
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {access_token}",
     }
 
-    output_dir = Path(directory_name)
-    output_dir.mkdir(exist_ok=True)
-    output_file = "output.txt"
+    all_file_paths: set[str] = set()
+    for file_path in file_paths:
+        for input_file in Path.cwd().glob(file_path):
+            if not input_file.is_file():
+                print(f"File {input_file} does not exist. Skipping...")
+                continue
+            all_file_paths.add(str(input_file))
 
-    if os.path.exists(output_file):
-        os.remove(output_file)
-
-    try:
-        linters = ["ruff"]
-        for linter in linters:
-            save_file = f"sarif_output_{linter}.json"
-
-            subprocess.run(
-                f"{linter} | reviewdog -reporter=sarif -runners={linter} --name={linter} -conf={github_action_path}/.reviewdog.yml > {save_file}",
-                shell=True,
-                stderr=subprocess.PIPE,
-                check=True,
-            )
-
-            with open(save_file, "r") as tool_output:
-                data = {
-                    "repo_name": repo_name,
-                    "commit_hash": commit_hash,
-                    "sarif_data": json.load(tool_output),
-                }
-
-                response = requests.post(url, json=data, headers=headers)
-                print(f"Server response {response.status_code}: {response.text}")
-
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while running the command: {e}")
-        print(f"Error output: {e.stderr.decode()}")
+    for input_file in all_file_paths:
+        with open(input_file, "r") as f:
+            response = requests.post(api_endpoint, data=f, headers=headers)
+            print(f"Server response {response.status_code}: {response.text}")
 
 
 if __name__ == "__main__":
-    run_linters()
+    main()

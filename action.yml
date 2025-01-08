@@ -20,7 +20,7 @@ runs:
     shell: sh
 
   - name: Run uploader
-    run: python $GITHUB_ACTION_PATH/action.py
+    run: find . && python $GITHUB_ACTION_PATH/action.py
     shell: sh
     env:
       GITHUB_SHA: ${{ github.sha }}

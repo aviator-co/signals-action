@@ -1,7 +1,0 @@
-runner:
-  mypy:
-    cmd: mypy .
-    format: mypy
-  ruff:
-    cmd: ruff check --output-format=sarif
-    format: sarif

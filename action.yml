@@ -6,10 +6,6 @@ branding:
 runs:
   using: "composite"
   steps:
-  - uses: actions/checkout@v4
-    with:
-      filter: 'blob:none'
-
   - uses: actions/setup-python@v5
     with:
       python-version: "3.12"

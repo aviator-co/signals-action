@@ -10,7 +10,7 @@ API_ENDPOINTS = {
 }
 
 
-def main():
+def main() -> None:
     commit_sha = os.getenv("GITHUB_SHA", None)
     if commit_sha is None:
         print("GITHUB_SHA is not set. Exiting...")
@@ -29,13 +29,13 @@ def main():
         sys.exit(1)
     file_paths_str = os.getenv("FILE_PATHS", "")
     file_paths = list(
-        filter(lambda p: p != "", [p.strip() for p in file_paths_str.split(",")])
+        filter(lambda p: p != "", [p.strip() for p in file_paths_str.split(",")]),
     )
     if not file_paths:
         print("FILE_PATHS is not set. Exiting...")
         sys.exit(1)
 
-    api_endpoint = API_ENDPOINTS.get(input_format, None)
+    api_endpoint = API_ENDPOINTS.get(input_format)
     if api_endpoint is None:
         print(f"Invalid input format {input_format}. Exiting...")
         sys.exit(1)
@@ -46,16 +46,19 @@ def main():
         "Authorization": f"Bearer {access_token}",
     }
 
-    all_file_paths: set[str] = set()
+    all_file_paths: set[Path] = set()
     for file_path in file_paths:
         for input_file in Path.cwd().glob(file_path):
             if not input_file.is_file():
                 print(f"File {input_file} does not exist. Skipping...")
                 continue
-            all_file_paths.add(str(input_file))
+            all_file_paths.add(input_file)
 
     for input_file in all_file_paths:
-        with open(input_file, "r") as f:
+        with input_file.open() as f:
+            print(
+                f"Sending file {input_file} (size {input_file.stat().st_size}) to {api_endpoint}",
+            )
             response = requests.post(api_endpoint, data=f, headers=headers)
             print(f"Server response {response.status_code}: {response.text}")
 

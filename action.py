@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 from pathlib import Path
@@ -8,6 +9,18 @@ API_ENDPOINTS = {
     "sarif": "https://app.aviator.co/api/signals/sarif",
     "astgrep": "https://app.aviator.co/api/signals/astgrep",
 }
+
+
+def _fix_sarif_paths(sarif: dict):
+    prefix = "file://" + str(Path.cwd()) + "/"
+    for run in sarif["runs"]:
+        for result in run["results"]:
+            for location in result["locations"]:
+                physical_location = location.get("physicalLocation", {})
+                artifact_location = physical_location.get("artifactLocation", {})
+                uri = artifact_location.get("uri", "")
+                if uri.startswith(prefix):
+                    artifact_location["uri"] = uri[len(prefix) :]
 
 
 def main() -> None:
@@ -59,7 +72,12 @@ def main() -> None:
             print(
                 f"Sending file {input_file} (size {input_file.stat().st_size}) to {api_endpoint}",
             )
-            response = requests.post(api_endpoint, data=f, headers=headers)
+            if input_format == "sarif":
+                sarif = json.load(f)
+                _fix_sarif_paths(sarif)
+                response = requests.post(api_endpoint, json=sarif, headers=headers)
+            else:
+                response = requests.post(api_endpoint, data=f, headers=headers)
             print(f"Server response {response.status_code}: {response.text}")
 
 
